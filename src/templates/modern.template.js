@@ -59,20 +59,23 @@ const createCustomerInfo = (doc, invoiceData, language = 'en') => {
 
   // Customer details with modern box design
   doc
-    .rect(300, startY, 250, 100)
+    .rect(270, startY, 275, 100)
     .fillAndStroke('#f8fafc', colors.primary);
 
   doc
     .font('Bold')
     .fontSize(12)
     .fillColor(colors.primary)
-    .text(t.billTo, 310, startY + 10)
+    .text(t.billTo, 280, startY + 10)
     .font('Regular')
     .fontSize(10)
     .fillColor(colors.text)
-    .text(invoiceData.customerName, 310, startY + 30)
-    .text(invoiceData.customerRecipient, 310, startY + 50)
-    .text(invoiceData.customerAddress, 310, startY + 70);
+    .text(invoiceData.customerName, 280, startY + 30)
+    .text(invoiceData.customerRecipient, 280, startY + 50)
+    .text(invoiceData.customerAddress, {
+      width: 260,
+      align: 'left'
+    }, startY + 70);
 
   doc.moveDown(3);
 };
