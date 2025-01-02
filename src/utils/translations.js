@@ -15,7 +15,19 @@ export const translations = {
       tax: 'Tax',
       thankYou: 'Thank you for your business!',
       paymentTerms: 'Payment is due within',
-      paymentTermsNext: 'days. Please include the invoice number on your check.'
+      paymentTermsNext: 'days. Please include the invoice number on your check.',
+      transferDetails: 'Bank Details',
+      bankName: 'Bank Name',
+      accountName: 'Account Name',
+      accountNumber: 'Account Number',
+      taxCode: 'Kode Objek Pajak',
+      billingCode: 'Kode Billing',
+      signature: {
+        title: 'PT Finskor Teknologi Indonesia',
+        name: 'Wildiyanto Yawin',
+        position: 'President Director',
+        date: 'Date'
+      }
     },
     id: {
       invoice: 'INVOICE',
@@ -33,6 +45,18 @@ export const translations = {
       tax: 'Pajak',
       thankYou: 'Terima kasih atas kepercayaan Anda!',
       paymentTerms: 'Pembayaran jatuh tempo dalam',
-      paymentTermsNext: 'hari. Harap cantumkan nomor faktur pada pembayaran Anda.'
+      paymentTermsNext: 'hari. Harap cantumkan nomor faktur pada pembayaran Anda.',
+      transferDetails: 'Informasi Bank',
+      bankName: 'Nama Bank',
+      accountName: 'Nama Rekening',
+      accountNumber: 'Nomor Rekening',
+      taxCode: 'Kode Objek Pajak',
+      billingCode: 'Kode Billing',
+      signature: {
+        title: 'PT Finskor Teknologi Indonesia',
+        name: 'Wildiyanto Yawin',
+        position: 'Direktur Utama',
+        date: 'Tanggal'
+      }
     }
   };
