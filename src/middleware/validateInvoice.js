@@ -12,6 +12,7 @@ const invoiceSchema = Joi.object({
   percentageGrossUp: Joi.number().required(),
   grossUpInAdvance: Joi.boolean().required(),
   withSignature: Joi.boolean().required(),
+  withTaxCode: Joi.boolean().required(),
   items: Joi.array().items(
     Joi.object({
       description: Joi.string().required(),

@@ -310,7 +310,7 @@ const createDetailRow = (doc, text, value, x, y, position) => {
     .text(value, x + columnConfig.label + columnConfig.separator, y, { width: columnConfig.value, align: 'left' });
 };
 
-const createTransferDetails = (doc, withSignature, yPosition, language = 'en') => {
+const createTransferDetails = (doc, withSignature, withTaxCode, yPosition, language = 'en') => {
   const t = translations[language];
   const startX = TABLE_SETTINGS.startX;;
   const boxWidth = TABLE_SETTINGS.width;
@@ -346,9 +346,12 @@ const createTransferDetails = (doc, withSignature, yPosition, language = 'en') =
   createDetailRow(doc, t.accountName, bankDetails.accountName, leftX, yPosition + 150, 'left');
 
   // Right column
-  const rightX = startX + ((boxWidth/3) *2) - 10;
-  createDetailRow(doc, t.taxCode, bankDetails.taxCode, rightX, yPosition + 120, 'right');
-  createDetailRow(doc, t.billingCode, bankDetails.billingCode, rightX, yPosition + 135, 'right');
+  if(withTaxCode){
+    const rightX = startX + ((boxWidth/3) *2) - 10;
+    createDetailRow(doc, t.taxCode, bankDetails.taxCode, rightX, yPosition + 120, 'right');
+    createDetailRow(doc, t.billingCode, bankDetails.billingCode, rightX, yPosition + 135, 'right');
+  }
+  
 
   createSignatureBox(doc, withSignature, yPosition + 190, language);
   return yPosition + boxHeight;
@@ -379,7 +382,7 @@ const createTableTotal = (doc, yPosition, totalAmount, invoiceData, language = '
   }
 
   // Add transfer details
-  createTransferDetails(doc, invoiceData.withSignature, yPosition, language);
+  createTransferDetails(doc, invoiceData.withSignature, invoiceData.withTaxCode, yPosition, language);
   
   return result;
 };
