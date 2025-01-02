@@ -6,7 +6,7 @@ const generatePDF = (invoiceData) => {
     try {
       const doc = new PDFDocument({
         size: 'A4',
-        margin: 50
+        margin: 30
       });
       
       const chunks = [];
@@ -25,7 +25,7 @@ const generatePDF = (invoiceData) => {
       template.createHeader(doc, language);
       template.createCustomerInfo(doc, invoiceData, language);
       template.createItemsTable(doc, invoiceData.items, language);
-      template.createFooter(doc, language);
+      template.createFooter(doc, invoiceData, language);
 
       doc.end();
     } catch (error) {

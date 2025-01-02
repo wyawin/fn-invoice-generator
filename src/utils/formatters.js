@@ -1,12 +1,12 @@
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'IDR'
   }).format(amount);
 };
 
-const formatDate = (date) => {
-  return new Intl.DateTimeFormat('en-US', {
+const formatDate = (date, language) => {
+  return new Intl.DateTimeFormat(`${language}-US`, {
     year: 'numeric',
     month: 'long',
     day: 'numeric'

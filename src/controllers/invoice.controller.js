@@ -3,11 +3,19 @@ const { v4: uuidv4 } = require('uuid');
 
 const generateInvoice = async (req, res) => {
   try {
-    const invoiceData = {
+    let invoiceData = {
       id: uuidv4(),
       ...req.body,
+      invoiceDate: new Date(req.body.invoiceDate).toISOString(),
       createdAt: new Date().toISOString()
     };
+
+    const dueDate = new Date(new Date().setDate((new Date(invoiceData.invoiceDate)).getDate() + invoiceData.dueIn));
+
+    invoiceData = {
+      ...invoiceData,
+      dueDate: dueDate.toISOString()
+    }
 
     const pdfBuffer = await generatePDF(invoiceData);
 

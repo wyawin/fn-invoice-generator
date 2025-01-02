@@ -3,8 +3,14 @@ const Joi = require('joi');
 const invoiceSchema = Joi.object({
   template: Joi.string().valid('modern', 'classic').default('classic'),
   language: Joi.string().valid('en', 'id').default('en'),
+  invoiceNumber: Joi.string().required(),
+  invoiceDate: Joi.date().required(),
+  dueIn: Joi.number().required(),
   customerName: Joi.string().required(),
+  customerRecipient: Joi.string().required(),
   customerAddress: Joi.string().required(),
+  percentageGrossUp: Joi.number().required(),
+  grossUpInAdvance: Joi.boolean().required(),
   items: Joi.array().items(
     Joi.object({
       description: Joi.string().required(),

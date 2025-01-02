@@ -29,9 +29,9 @@ const createHeader = (doc, language = 'en') => {
     .text(t.invoice, 100, 30)
     .fontSize(10)
     .font('Regular')
-    .text('PT Finskor Teknologi Indonesia', doc.page.width - 250, 20)
-    .text('Gedung AD Premier Lt 9, Jl. TB Simatupang No.5, RT.5/RW.7, Ps. Minggu, Jakarta Selatan', doc.page.width - 250, 35)
-    .text('support@fineksi.com', doc.page.width - 250, 60);
+    .text('PT Finskor Teknologi Indonesia', doc.page.width - 260, 20)
+    .text('Gedung AD Premier Lt 9, Jl. TB Simatupang No.5, RT.5/RW.7, Ps. Minggu, Jakarta Selatan', doc.page.width - 260, 35)
+    .text('support@fineksi.com', doc.page.width - 260, 60);
 
   doc.moveDown(4);
 };
@@ -42,7 +42,7 @@ const createCustomerInfo = (doc, invoiceData, language = 'en') => {
 
   // Invoice details with modern box design
   doc
-    .rect(50, startY, 200, 80)
+    .rect(50, startY, 200, 100)
     .fillAndStroke('#f8fafc', colors.primary);
 
   doc
@@ -53,12 +53,13 @@ const createCustomerInfo = (doc, invoiceData, language = 'en') => {
     .font('Regular')
     .fontSize(10)
     .fillColor(colors.text)
-    .text(`${t.invoiceNumber}: #${invoiceData.id.slice(0, 8).toUpperCase()}`, 60, startY + 30)
-    .text(`${t.date}: ${formatDate(invoiceData.createdAt)}`, 60, startY + 50);
+    .text(`${t.invoiceNumber}: #${invoiceData.invoiceNumber}`, 60, startY + 30)
+    .text(`${t.date}: ${formatDate(invoiceData.invoiceDate, language)}`, 60, startY + 50)
+    .text(`${t.dueDate}: ${formatDate(invoiceData.dueDate, language)}`, 60, startY + 70);
 
   // Customer details with modern box design
   doc
-    .rect(300, startY, 250, 80)
+    .rect(300, startY, 250, 100)
     .fillAndStroke('#f8fafc', colors.primary);
 
   doc
@@ -70,12 +71,13 @@ const createCustomerInfo = (doc, invoiceData, language = 'en') => {
     .fontSize(10)
     .fillColor(colors.text)
     .text(invoiceData.customerName, 310, startY + 30)
-    .text(invoiceData.customerAddress, 310, startY + 50);
+    .text(invoiceData.customerRecipient, 310, startY + 50)
+    .text(invoiceData.customerAddress, 310, startY + 70);
 
-  doc.moveDown(6);
+  doc.moveDown(3);
 };
 
-const createFooter = (doc, language = 'en') => {
+const createFooter = (doc, invoiceData, language = 'en') => {
   const t = translations[language];
   const pageHeight = doc.page.height;
   
@@ -98,7 +100,7 @@ const createFooter = (doc, language = 'en') => {
     .fontSize(9)
     .fillColor(colors.secondary)
     .text(
-      t.paymentTerms,
+      `${t.paymentTerms} ${invoiceData.dueIn} ${t.paymentTermsNext}`,
       { align: 'center' }
     );
 };
