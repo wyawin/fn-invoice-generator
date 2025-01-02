@@ -5,7 +5,7 @@ const { translations } = require('../utils/translations');
 const TABLE_SETTINGS = {
   startX: 50,
   width: 495,
-  columnWidths: [245, 70, 90, 90],
+  columnWidths: [240, 70, 90, 90],
   rowHeight: 20,
   headerHeight: 20,
   margin: {
@@ -33,7 +33,7 @@ const createTableHeader = (doc, yPosition, language = 'en') => {
   headers.forEach((header, i) => {
     doc.text(
       header,
-      xOffset,
+      i === 0 ? xOffset + 5 : xOffset ,
       yPosition - 5,
       {
         width: TABLE_SETTINGS.columnWidths[i],
@@ -72,7 +72,7 @@ const createTableRows = (doc, items, startY) => {
     // Description
     doc.text(
       item.description,
-      xOffset,
+      xOffset + 5,
       yPosition,
       { width: TABLE_SETTINGS.columnWidths[0] }
     );
