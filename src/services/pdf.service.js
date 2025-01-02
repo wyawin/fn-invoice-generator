@@ -1,6 +1,5 @@
 const PDFDocument = require('pdfkit');
-const { createHeader, createCustomerInfo, createItemsTable, createFooter } = require('./template.service');
-const { formatCurrency, formatDate } = require('../utils/formatters');
+const { getTemplate } = require('./template.manager');
 
 const generatePDF = (invoiceData) => {
   return new Promise((resolve, reject) => {
@@ -18,11 +17,15 @@ const generatePDF = (invoiceData) => {
       doc.registerFont('Bold', 'Helvetica-Bold');
       doc.registerFont('Regular', 'Helvetica');
 
-      // Create sections
-      createHeader(doc);
-      createCustomerInfo(doc, invoiceData);
-      createItemsTable(doc, invoiceData.items);
-      createFooter(doc, invoiceData);
+      // Get the requested template
+      const template = getTemplate(invoiceData.template || 'classic');
+      const language = invoiceData.language || 'en';
+
+      // Create sections using the template
+      template.createHeader(doc, language);
+      template.createCustomerInfo(doc, invoiceData, language);
+      template.createItemsTable(doc, invoiceData.items, language);
+      template.createFooter(doc, language);
 
       doc.end();
     } catch (error) {

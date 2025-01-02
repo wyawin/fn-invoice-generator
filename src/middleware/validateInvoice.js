@@ -1,6 +1,8 @@
 const Joi = require('joi');
 
 const invoiceSchema = Joi.object({
+  template: Joi.string().valid('modern', 'classic').default('classic'),
+  language: Joi.string().valid('en', 'id').default('en'),
   customerName: Joi.string().required(),
   customerAddress: Joi.string().required(),
   items: Joi.array().items(
@@ -13,7 +15,7 @@ const invoiceSchema = Joi.object({
 });
 
 const validateInvoice = (req, res, next) => {
-  const { error } = invoiceSchema.validate(req.body);
+  const { error, value } = invoiceSchema.validate(req.body);
   
   if (error) {
     return res.status(400).json({
@@ -22,6 +24,7 @@ const validateInvoice = (req, res, next) => {
     });
   }
   
+  req.body = value; // Use validated and defaulted values
   next();
 };
 
