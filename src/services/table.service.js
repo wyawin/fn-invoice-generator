@@ -180,9 +180,14 @@ const generateTotalGrossUpInAdvance = (doc, yPosition, totalAmount, language = '
     return { amountGrossUp, taxAmount };
 }
 
-const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'en', totalWidth, startX, percentageGrossUp) => {
+const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'en', totalWidth, startX, percentageGrossUp, taxRounding) => {
   const t = translations[language];  
-  const taxAmount = Math.floor((totalAmount * percentageGrossUp)/100)
+  let taxAmount = 0;
+  if(taxRounding === "normalRound") {
+    taxAmount = Math.round((totalAmount * percentageGrossUp)/100);
+  } else {
+    taxAmount = Math.floor((totalAmount * percentageGrossUp)/100);
+  }
   const amountNet = totalAmount - taxAmount;
   // Add total text and amount
   doc
@@ -364,6 +369,7 @@ const createTableTotal = (doc, yPosition, totalAmount, invoiceData, language = '
 
   const grossUpInAdvance = invoiceData.grossUpInAdvance;
   const percentageGrossUp = invoiceData.percentageGrossUp;
+  const taxRounding = invoiceData.taxRounding;
   
   // Add total box with background
   doc
@@ -378,7 +384,7 @@ const createTableTotal = (doc, yPosition, totalAmount, invoiceData, language = '
   if(grossUpInAdvance){
     result = generateTotalGrossUpInAdvance(doc, yPosition, totalAmount, language, totalWidth, startX, percentageGrossUp);
   } else {
-    result = generateTotalGrossUpInArrear(doc, yPosition, totalAmount, language, totalWidth, startX, percentageGrossUp);
+    result = generateTotalGrossUpInArrear(doc, yPosition, totalAmount, language, totalWidth, startX, percentageGrossUp, taxRounding);
   }
 
   // Add transfer details

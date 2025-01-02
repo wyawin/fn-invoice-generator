@@ -13,6 +13,7 @@ const invoiceSchema = Joi.object({
   grossUpInAdvance: Joi.boolean().required(),
   withSignature: Joi.boolean().required(),
   withTaxCode: Joi.boolean().required(),
+  taxRounding: Joi.string().required(),
   items: Joi.array().items(
     Joi.object({
       description: Joi.string().required(),
