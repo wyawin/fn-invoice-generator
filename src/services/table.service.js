@@ -51,7 +51,7 @@ const createTableRows = (doc, items, startY) => {
   let totalAmount = 0;
 
   items.forEach((item, index) => {
-    const amount = item.quantity * item.price;
+    const amount = Math.round(item.quantity * item.price, 0);
     totalAmount += amount;
 
     // Alternate row background
@@ -110,26 +110,18 @@ const createTableRows = (doc, items, startY) => {
   return { yPosition, totalAmount };
 };
 
-const createTableTotal = (doc, yPosition, totalAmount) => {
-  const totalWidth = 180;
-  const startX = TABLE_SETTINGS.startX + TABLE_SETTINGS.width - totalWidth;
-  
-  // Add total box with background
-  doc
-    .fillColor('#f8fafc')
-    .rect(startX, yPosition + 5, totalWidth, 30)
-    .fill()
-    .strokeColor(colors.primary)
-    .lineWidth(1)
-    .stroke();
-
+const generateTotalGrossUpInAdvance = (doc, yPosition, totalAmount, language = 'en', totalWidth, startX, percentageGrossUp) => {
+  const t = translations[language];
+  const divider = 100 - percentageGrossUp;
+  const amountGrossUp = Math.round((totalAmount / divider) * 100);
+  const taxAmount = amountGrossUp - totalAmount;
   // Add total text and amount
   doc
     .font('Bold')
     .fontSize(12)
     .fillColor(colors.primary)
     .text(
-      'Total:',
+      `${t.total}:`,
       startX + 10,
       yPosition + 15
     )
@@ -142,9 +134,139 @@ const createTableTotal = (doc, yPosition, totalAmount) => {
         align: 'right' 
       }
     );
+
+    // Add total text and amount
+    doc
+    .font('Regular')
+    .fontSize(11)
+    .fillColor(colors.text)
+    .text(
+      `${t.totalGrossUp}:`,
+      startX + 10,
+      yPosition + 35
+    )
+    .text(
+      formatCurrency(amountGrossUp),
+      startX,
+      yPosition + 35,
+      { 
+        width: totalWidth - 20,
+        align: 'right' 
+      }
+    );
+
+    // Add total text and amount
+    doc
+    .font('Regular')
+    .fontSize(11)
+    .fillColor(colors.text)
+    .text(
+      `${t.tax}:`,
+      startX + 10,
+      yPosition + 55
+    )
+    .text(
+      formatCurrency(taxAmount),
+      startX,
+      yPosition + 55,
+      { 
+        width: totalWidth - 20,
+        align: 'right' 
+      }
+    );
+}
+
+const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'en', totalWidth, startX, percentageGrossUp) => {
+  const t = translations[language];  
+  const taxAmount = Math.floor((totalAmount * percentageGrossUp)/100)
+  const amountNet = totalAmount - taxAmount;
+  // Add total text and amount
+  doc
+    .font('Regular')
+    .fontSize(11)
+    .fillColor(colors.text)
+    .text(
+      `${t.totalGrossUp}:`,
+      startX + 10,
+      yPosition + 15
+    )
+    .text(
+      formatCurrency(totalAmount),
+      startX,
+      yPosition + 15,
+      { 
+        width: totalWidth - 20,
+        align: 'right' 
+      }
+    );
+
+    // Add total text and amount
+    doc
+    .font('Regular')
+    .fontSize(11)
+    .fillColor(colors.text)
+    .text(
+      `${t.tax}:`,
+      startX + 10,
+      yPosition + 35
+    )
+    .text(
+      formatCurrency(taxAmount),
+      startX,
+      yPosition + 35,
+      { 
+        width: totalWidth - 20,
+        align: 'right' 
+      }
+    );
+
+    // Add total text and amount
+    doc
+    .font('Bold')
+    .fontSize(12)
+    .fillColor(colors.primary)
+    .text(
+      `${t.total}:`,
+      startX + 10,
+      yPosition + 55
+    )
+    .text(
+      formatCurrency(amountNet),
+      startX,
+      yPosition + 55,
+      { 
+        width: totalWidth - 20,
+        align: 'right' 
+      }
+    );
+}
+
+const createTableTotal = (doc, yPosition, totalAmount, invoiceData, language = 'en') => {
+  const t = translations[language];
+  const totalWidth = 250;
+  const startX = TABLE_SETTINGS.startX + TABLE_SETTINGS.width - totalWidth;
+
+  const grossUpInAdvance = invoiceData.grossUpInAdvance;
+  const percentageGrossUp = invoiceData.percentageGrossUp;
+  
+  // Add total box with background
+  doc
+    .fillColor('#f8fafc')
+    .rect(startX, yPosition + 5, totalWidth, 70)
+    .fill()
+    .strokeColor(colors.primary)
+    .lineWidth(1)
+    .stroke();
+
+  if(grossUpInAdvance){
+    generateTotalGrossUpInAdvance(doc, yPosition, totalAmount, language, totalWidth, startX, percentageGrossUp);
+  } else {
+    generateTotalGrossUpInArrear(doc, yPosition, totalAmount, language, totalWidth, startX, percentageGrossUp);
+  }
+  
 };
 
-const createItemsTable = (doc, items, language = 'en') => {
+const createItemsTable = (doc, items, invoiceData, language = 'en') => {
   const tableTop = doc.y + 20;
   
   // Create table header
@@ -154,7 +276,7 @@ const createItemsTable = (doc, items, language = 'en') => {
   const { yPosition, totalAmount } = createTableRows(doc, items, rowsStartY);
   
   // Create table total
-  createTableTotal(doc, yPosition, totalAmount, language);
+  createTableTotal(doc, yPosition, totalAmount, invoiceData, language);
 };
 
 module.exports = {

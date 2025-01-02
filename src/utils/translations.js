@@ -10,7 +10,9 @@ export const translations = {
       quantity: 'Quantity',
       unitPrice: 'Unit Price',
       amount: 'Amount',
-      total: 'Total',
+      total: 'Total Paid',
+      totalGrossUp: 'Total Gross-Up',
+      tax: 'Tax',
       thankYou: 'Thank you for your business!',
       paymentTerms: 'Payment is due within',
       paymentTermsNext: 'days. Please include the invoice number on your check.'
@@ -25,8 +27,10 @@ export const translations = {
       description: 'Deskripsi',
       quantity: 'Jumlah',
       unitPrice: 'Harga Satuan',
-      amount: 'Total',
-      total: 'Total',
+      amount: 'Jumlah',
+      total: 'Total Bayar',
+      totalGrossUp: 'Total Gross-Up',
+      tax: 'Pajak',
       thankYou: 'Terima kasih atas kepercayaan Anda!',
       paymentTerms: 'Pembayaran jatuh tempo dalam',
       paymentTermsNext: 'hari. Harap cantumkan nomor faktur pada pembayaran Anda.'

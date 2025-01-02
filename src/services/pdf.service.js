@@ -24,7 +24,7 @@ const generatePDF = (invoiceData) => {
       // Create sections using the template
       template.createHeader(doc, language);
       template.createCustomerInfo(doc, invoiceData, language);
-      template.createItemsTable(doc, invoiceData.items, language);
+      template.createItemsTable(doc, invoiceData.items, invoiceData, language);
       template.createFooter(doc, invoiceData, language);
 
       doc.end();
