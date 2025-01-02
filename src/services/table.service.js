@@ -123,7 +123,7 @@ const generateTotalGrossUpInAdvance = (doc, yPosition, totalAmount, language = '
     .fontSize(12)
     .fillColor(colors.primary)
     .text(
-      `${t.total}:`,
+      `${t.total}`,
       startX + 10,
       yPosition + 15
     )
@@ -143,7 +143,7 @@ const generateTotalGrossUpInAdvance = (doc, yPosition, totalAmount, language = '
     .fontSize(11)
     .fillColor(colors.text)
     .text(
-      `${t.totalGrossUp}:`,
+      `${t.totalGrossUp}`,
       startX + 10,
       yPosition + 35
     )
@@ -163,7 +163,7 @@ const generateTotalGrossUpInAdvance = (doc, yPosition, totalAmount, language = '
     .fontSize(11)
     .fillColor(colors.text)
     .text(
-      `${t.tax}:`,
+      `${t.tax}`,
       startX + 10,
       yPosition + 55
     )
@@ -190,7 +190,7 @@ const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'e
     .fontSize(11)
     .fillColor(colors.text)
     .text(
-      `${t.totalGrossUp}:`,
+      `${t.totalGrossUp}`,
       startX + 10,
       yPosition + 15
     )
@@ -210,7 +210,7 @@ const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'e
     .fontSize(11)
     .fillColor(colors.text)
     .text(
-      `${t.tax}:`,
+      `${t.tax}`,
       startX + 10,
       yPosition + 35
     )
@@ -230,7 +230,7 @@ const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'e
     .fontSize(12)
     .fillColor(colors.primary)
     .text(
-      `${t.total}:`,
+      `${t.total}`,
       startX + 10,
       yPosition + 55
     )
@@ -247,50 +247,116 @@ const generateTotalGrossUpInArrear = (doc, yPosition, totalAmount, language = 'e
     return { amountNet, taxAmount };
 }
 
+// const createTransferDetails = (doc, withSignature, yPosition, language = 'en') => {
+//   const t = translations[language];
+//   const startX = TABLE_SETTINGS.startX;
+//   const totalWidth = TABLE_SETTINGS.width;
+//   const columnWidth = totalWidth / 2 - 10; // Split into two columns with padding
+
+//   // Add transfer details box with background
+//   doc
+//     .fillColor('#f8fafc')
+//     .rect(startX, yPosition + 90, totalWidth, 80)
+//     .fill()
+//     .strokeColor(colors.primary)
+//     .lineWidth(1)
+//     .stroke();
+
+//   // Add transfer details header
+//   doc
+//     .font('Bold')
+//     .fontSize(12)
+//     .fillColor(colors.primary)
+//     .text(t.transferDetails, startX + 10, yPosition + 100);
+
+//   // Left column - Bank details
+//   doc
+//     .font('Regular')
+//     .fontSize(10)
+//     .fillColor(colors.text)
+//     .text(`${t.bankName}: ${bankDetails.bankName}`, startX + 10, yPosition + 120)
+//     .text(`${t.accountNumber}: ${bankDetails.accountNumber}`, startX + 10, yPosition + 135)
+//     .text(`${t.accountName}: ${bankDetails.accountName}`, startX + 10, yPosition + 150);
+
+//   // Right column - Tax and Billing codes
+//   const rightColumnX = startX + columnWidth + 20;
+//   doc
+//     .text(`${t.taxCode}: ${bankDetails.taxCode}`, rightColumnX, yPosition + 120)
+//     .text(`${t.billingCode}: ${bankDetails.billingCode}`, rightColumnX, yPosition + 135);
+
+//   // Add signature box below
+//   createSignatureBox(doc, withSignature, yPosition + 190, language);
+// };
+
+const COLUMN_WIDTHS = {
+  left: {
+    label: 90,    // Width for labels
+    separator: 15,  // Width for colon
+    value: 150     // Width for values
+  },
+  right: {
+    label: 90,    // Width for labels
+    separator: 15,  // Width for colon
+    value: 130     // Width for values
+  }
+};
+
+
+const createDetailRow = (doc, text, value, x, y, position) => {
+  columnConfig = COLUMN_WIDTHS[position];
+  doc
+    .text(text, x, y, { width: columnConfig.label, align: 'left' })
+    .text(':', x + columnConfig.label, y, { width: columnConfig.separator, align: 'center' })
+    .text(value, x + columnConfig.label + columnConfig.separator, y, { width: columnConfig.value, align: 'left' });
+};
+
 const createTransferDetails = (doc, withSignature, yPosition, language = 'en') => {
   const t = translations[language];
-  const startX = TABLE_SETTINGS.startX;
-  const totalWidth = TABLE_SETTINGS.width;
-  const columnWidth = totalWidth / 2 - 10; // Split into two columns with padding
+  const startX = TABLE_SETTINGS.startX;;
+  const boxWidth = TABLE_SETTINGS.width;
+  const boxHeight = 90;
+  const margin = 10;
 
-  // Add transfer details box with background
+  // Background box
   doc
     .fillColor('#f8fafc')
-    .rect(startX, yPosition + 90, totalWidth, 80)
+    .rect(startX, yPosition + 85, boxWidth, boxHeight)
     .fill()
     .strokeColor(colors.primary)
     .lineWidth(1)
     .stroke();
 
-  // Add transfer details header
+  // Header
   doc
     .font('Bold')
     .fontSize(12)
     .fillColor(colors.primary)
-    .text(t.transferDetails, startX + 10, yPosition + 100);
+    .text(t.transferDetails, startX + margin, yPosition + 100);
 
-  // Left column - Bank details
+  // Set font for details
   doc
     .font('Regular')
     .fontSize(10)
-    .fillColor(colors.text)
-    .text(`${t.bankName}: ${bankDetails.bankName}`, startX + 10, yPosition + 120)
-    .text(`${t.accountNumber}: ${bankDetails.accountNumber}`, startX + 10, yPosition + 135)
-    .text(`${t.accountName}: ${bankDetails.accountName}`, startX + 10, yPosition + 150);
+    .fillColor(colors.text);
 
-  // Right column - Tax and Billing codes
-  const rightColumnX = startX + columnWidth + 20;
-  doc
-    .text(`${t.taxCode}: ${bankDetails.taxCode}`, rightColumnX, yPosition + 120)
-    .text(`${t.billingCode}: ${bankDetails.billingCode}`, rightColumnX, yPosition + 135);
+  // Left column
+  const leftX = startX + margin;
+  createDetailRow(doc, t.bankName, bankDetails.bankName, leftX, yPosition + 120, 'left');
+  createDetailRow(doc, t.accountNumber, bankDetails.accountNumber, leftX, yPosition + 135, 'left');
+  createDetailRow(doc, t.accountName, bankDetails.accountName, leftX, yPosition + 150, 'left');
 
-  // Add signature box below
+  // Right column
+  const rightX = startX + ((boxWidth/3) *2) - 10;
+  createDetailRow(doc, t.taxCode, bankDetails.taxCode, rightX, yPosition + 120, 'right');
+  createDetailRow(doc, t.billingCode, bankDetails.billingCode, rightX, yPosition + 135, 'right');
+
   createSignatureBox(doc, withSignature, yPosition + 190, language);
+  return yPosition + boxHeight;
 };
 
 const createTableTotal = (doc, yPosition, totalAmount, invoiceData, language = 'en') => {
   const t = translations[language];
-  const totalWidth = 250;
+  const totalWidth = 220;
   const startX = TABLE_SETTINGS.startX + TABLE_SETTINGS.width - totalWidth;
 
   const grossUpInAdvance = invoiceData.grossUpInAdvance;
