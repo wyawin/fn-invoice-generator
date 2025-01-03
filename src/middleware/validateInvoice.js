@@ -18,7 +18,7 @@ const invoiceSchema = Joi.object({
     Joi.object({
       description: Joi.string().required(),
       quantity: Joi.number().positive().required(),
-      price: Joi.number().positive().required()
+      price: Joi.number().required()
     })
   ).min(1).required()
 });
