@@ -53,7 +53,7 @@ const createCustomerInfo = (doc, invoiceData, language = 'en') => {
     .font('Regular')
     .fontSize(10)
     .fillColor(colors.text)
-    .text(`${t.invoiceNumber}: #${invoiceData.invoiceNumber}`, 60, startY + 30)
+    .text(`${t.invoiceNumber}: ${invoiceData.invoiceNumber}`, 60, startY + 30)
     .text(`${t.date}: ${formatDate(invoiceData.invoiceDate, language)}`, 60, startY + 50)
     .text(`${t.dueDate}: ${formatDate(invoiceData.dueDate, language)}`, 60, startY + 70);
 
